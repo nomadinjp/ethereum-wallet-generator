@@ -52,7 +52,7 @@ func main() {
 	strict := flag.Bool("strict", false, "strict contains mode (required contains to use)")
 	contain := flag.String("contains", "", "show only result that contained with the given letters (support for multiple characters)")
 	prefix := flag.String("prefix", "", "show only result that prefix was matched with the given letters  (support for single character)")
-	suffix := flag.String("suffix", "", "show only result that suffix was matched with the given letters (support for single character)")
+	suffix := flag.String("suffix", "", "show only result that suffix was matched with the given letters (support for multiple characters)")
 	regEx := flag.String("regex", "", "show only result that was matched with given regex (eg. ^0x99 or ^0x00)")
 	isDryrun := flag.Bool("dryrun", false, "generate wallet without a result (used for benchmark speed)")
 	isCompatible := flag.Bool("compatible", false, "logging compatible mode (turn this on to fix logging glitch)")
@@ -64,6 +64,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	suffixes := strings.Split(*suffix, ",")
 	contains := strings.Split(*contain, ",")
 	validateAddress := func(address string) bool {
 		isValid := true
@@ -88,8 +89,11 @@ func main() {
 			}
 		}
 
-		if *suffix != "" {
-			if !strings.HasSuffix(address, *suffix) {
+		if len(suffixes) > 0 {
+			cb := func(suffix string) bool {
+				return strings.HasSuffix(address, suffix)
+			}
+			if !utils.Some(suffixes, cb) {
 				isValid = false
 			}
 		}
