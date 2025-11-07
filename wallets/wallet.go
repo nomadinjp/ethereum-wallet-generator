@@ -4,6 +4,7 @@ import (
 	"crypto/ecdsa"
 	"encoding/hex"
 	"errors"
+	"github.com/planxnx/ethereum-wallet-generator/utils"
 	"unsafe"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -58,10 +59,7 @@ func NewFromPrivatekey(privateKey *ecdsa.PrivateKey) (*Wallet, error) {
 	if len(publicKeyBytes) > common.AddressLength {
 		publicKeyBytes = publicKeyBytes[len(publicKeyBytes)-common.AddressLength:]
 	}
-	pubHex := make([]byte, len(publicKeyBytes)*2+2)
-	copy(pubHex[:2], "0x")
-	hex.Encode(pubHex[2:], publicKeyBytes)
-	pubString := b2s(pubHex)
+	pubString := utils.ToTronAddress(publicKeyBytes)
 
 	return &Wallet{
 		Address:    pubString,

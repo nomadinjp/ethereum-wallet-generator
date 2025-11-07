@@ -10,6 +10,7 @@ require (
 	github.com/glebarez/sqlite v1.11.0
 	github.com/pkg/errors v0.9.1
 	github.com/schollz/progressbar/v3 v3.18.0
+	github.com/shengdoushi/base58 v1.0.0
 	github.com/stretchr/testify v1.10.0
 	github.com/tyler-smith/go-bip39 v1.1.0
 	golang.org/x/crypto v0.42.0
